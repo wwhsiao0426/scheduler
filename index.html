@@ -27,24 +27,6 @@
       </div>
     </section>
 
-    <!-- Google Sheet 設定 -->
-    <section class="card">
-      <div class="card-header" onclick="toggleSection('config-body')">
-        <h2>Google Sheets 設定</h2>
-        <span class="toggle-icon" id="config-icon">▼</span>
-      </div>
-      <div id="config-body" class="card-body">
-        <div class="form-row">
-          <label>Google Sheet ID</label>
-          <input type="text" id="sheet-id" placeholder="從試算表網址中取得的 ID">
-          <span class="hint">網址中 /d/ 與 /edit 之間的字串</span>
-        </div>
-        <div class="form-row actions">
-          <button onclick="saveConfig()" class="btn secondary">儲存設定</button>
-        </div>
-      </div>
-    </section>
-
     <!-- 申請休假 / 排班 -->
     <section class="card">
       <div class="card-header" onclick="toggleSection('request-body')">
@@ -134,6 +116,25 @@
         <div id="stats-container"></div>
       </div>
     </section>
+
+    <!-- Google Sheet 設定 -->
+    <section class="card">
+      <div class="card-header" onclick="toggleSection('config-body')">
+        <h2>Google Sheets 設定</h2>
+        <span class="toggle-icon" id="config-icon">▼</span>
+      </div>
+      <div id="config-body" class="card-body">
+        <div class="form-row">
+          <label>Google Sheet ID</label>
+          <input type="text" id="sheet-id" placeholder="從試算表網址中取得的 ID">
+          <span class="hint">網址中 /d/ 與 /edit 之間的字串</span>
+        </div>
+        <div class="form-row actions">
+          <button onclick="saveConfig()" class="btn secondary">儲存設定</button>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script src="config.js"></script>
