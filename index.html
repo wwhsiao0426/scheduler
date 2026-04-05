@@ -12,7 +12,7 @@
       <h1>排班表系統</h1>
     </header>
 
-    <!-- 排班說明 -->
+    <!-- 排班規則說明 -->
     <section class="card">
       <div class="card-header">
         <h2>排班規則說明</h2>
@@ -27,7 +27,32 @@
       </div>
     </section>
 
-    <!-- 申請休假 / 排班 -->
+    <!-- 排班月份設定 -->
+    <section class="card">
+      <div class="card-header">
+        <h2>排班月份設定</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <label>年份</label>
+          <select id="year-select"></select>
+          <label>月份</label>
+          <select id="month-select"></select>
+        </div>
+        <div class="form-row">
+          <label>額外假日</label>
+          <input type="text" id="extra-holidays" placeholder="例：4, 5, 18（逗號分隔的日期數字）">
+          <span class="hint">六、日之外需要放假的日期</span>
+        </div>
+        <div class="form-row actions">
+          <button onclick="handleGenerate()" class="btn primary">產生排班</button>
+          <button onclick="handlePush()" class="btn success" id="push-btn" disabled>推送到 Google Sheet</button>
+        </div>
+        <div id="msg-area"></div>
+      </div>
+    </section>
+
+    <!-- 優先休假及排班申請 -->
     <section class="card">
       <div class="card-header" onclick="toggleSection('request-body')">
         <h2>優先休假及排班申請</h2>
@@ -70,31 +95,6 @@
       </div>
     </section>
 
-    <!-- 排班設定 -->
-    <section class="card">
-      <div class="card-header">
-        <h2>排班設定</h2>
-      </div>
-      <div class="card-body">
-        <div class="form-row">
-          <label>年份</label>
-          <select id="year-select"></select>
-          <label>月份</label>
-          <select id="month-select"></select>
-        </div>
-        <div class="form-row">
-          <label>額外假日</label>
-          <input type="text" id="extra-holidays" placeholder="例：4, 5, 18（逗號分隔的日期數字）">
-          <span class="hint">六、日之外需要放假的日期</span>
-        </div>
-        <div class="form-row actions">
-          <button onclick="handleGenerate()" class="btn primary">產生排班</button>
-          <button onclick="handlePush()" class="btn success" id="push-btn" disabled>推送到 Google Sheet</button>
-        </div>
-        <div id="msg-area"></div>
-      </div>
-    </section>
-
     <!-- 排班表 -->
     <section class="card" id="calendar-section" style="display:none">
       <div class="card-header">
@@ -117,13 +117,13 @@
       </div>
     </section>
 
-    <!-- Google Sheet 設定 -->
+    <!-- Google Sheets 設定 -->
     <section class="card">
       <div class="card-header" onclick="toggleSection('config-body')">
-        <h2>Google Sheets 設定</h2>
-        <span class="toggle-icon" id="config-icon">▼</span>
+        <h2>Google Sheets 設定 <span class="header-hint">（預設 - 不須變更）</span></h2>
+        <span class="toggle-icon collapsed" id="config-icon">▼</span>
       </div>
-      <div id="config-body" class="card-body">
+      <div id="config-body" class="card-body" style="display:none">
         <div class="form-row">
           <label>Google Sheet ID</label>
           <input type="text" id="sheet-id" placeholder="從試算表網址中取得的 ID">
