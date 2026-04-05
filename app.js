@@ -99,18 +99,36 @@ function initCounts() {
 function pickPerson(counts, slot, hardExcl, softAvoid = [], prioritize = []) {
   const avail = PEOPLE.filter(p => !hardExcl.includes(p));
   if (avail.length === 0) throw new Error('排班人數不足，無法滿足所有限制');
+
+  // For s1 / s2 / s4: when tied, prefer people with high slot3 count
+  // (rescue them from being stuck in slot3 as leftover again)
+  const isRescueSlot = ['slot1', 'slot2', 'slot4'].includes(slot);
+
   avail.sort((a, b) => {
+    // 1. Primary: target slot count (+ soft/priority modifiers)
     const ca = counts[a][slot]
       + (softAvoid.includes(a)  ?  SOFT_PENALTY : 0)
       + (prioritize.includes(a) ? -SOFT_PENALTY : 0);
     const cb = counts[b][slot]
       + (softAvoid.includes(b)  ?  SOFT_PENALTY : 0)
       + (prioritize.includes(b) ? -SOFT_PENALTY : 0);
-    const d  = ca - cb;
+    let d = ca - cb;
     if (d !== 0) return d;
+
+    // 2. Total work count (ascending) – overall fairness
     const totA = counts[a].slot1 + counts[a].slot2 + counts[a].slot3 + counts[a].slot4;
     const totB = counts[b].slot1 + counts[b].slot2 + counts[b].slot3 + counts[b].slot4;
-    return (totA - totB) || a.localeCompare(b);
+    d = totA - totB;
+    if (d !== 0) return d;
+
+    // 3. slot3 rescue (descending) – pick high-slot3 person to free them from slot3
+    if (isRescueSlot) {
+      d = counts[b].slot3 - counts[a].slot3;
+      if (d !== 0) return d;
+    }
+
+    // 4. Alphabetical as final tiebreak
+    return a.localeCompare(b);
   });
   return avail[0];
 }
@@ -272,17 +290,25 @@ function generateSchedule(year, month, extraHolidays, reqOff = {}, reqWork = {})
       // Pool of people not yet assigned and not forced to rest
       const offPool = PEOPLE.filter(p => !mustRest.includes(p) && !assigned.includes(p));
 
-      // Pick "off": from offPool, avoid reqWorkToday if possible, minimise off count
+      // Pick "off": prefer whoever has the most slot3 count (give them relief from slot3),
+      // then min off count for balance, then alphabetical. Avoid reqWorkToday if possible.
       let off;
       if (mustRest.length >= 1) {
         // Someone is forced to rest — they take the off spot
         off = mustRest[0];
       } else {
-        // offPool has 4 people; pick 1 as off based on min off count, avoid reqWorkToday
         const offCandidates = offPool.filter(p => !reqWorkToday.includes(p));
         const pickFrom      = offCandidates.length > 0 ? offCandidates : offPool;
-        off = pickFrom.reduce((best, p) =>
-          counts[p].off < counts[best].off ? p : best, pickFrom[0]);
+        off = pickFrom.reduce((best, p) => {
+          // 1. Highest slot3 count → give them a break from slot3
+          if (counts[p].slot3 > counts[best].slot3) return p;
+          if (counts[p].slot3 < counts[best].slot3) return best;
+          // 2. Lowest off count → balance off days
+          if (counts[p].off < counts[best].off) return p;
+          if (counts[p].off > counts[best].off) return best;
+          // 3. Alphabetical
+          return p < best ? p : best;
+        }, pickFrom[0]);
       }
       counts[off].off++;
 
