@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排班表系統</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>排班表系統</h1>
+    </header>
+
+    <!-- Google Sheet 設定 -->
+    <section class="card">
+      <div class="card-header" onclick="toggleSection('config-body')">
+        <h2>Google Sheets 設定</h2>
+        <span class="toggle-icon" id="config-icon">▼</span>
+      </div>
+      <div id="config-body" class="card-body">
+        <div class="form-row">
+          <label>Google Sheet ID</label>
+          <input type="text" id="sheet-id" placeholder="從試算表網址中取得的 ID">
+          <span class="hint">網址中 /d/ 與 /edit 之間的字串</span>
+        </div>
+        <div class="form-row actions">
+          <button onclick="saveConfig()" class="btn secondary">儲存設定</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 申請休假 / 排班 -->
+    <section class="card">
+      <div class="card-header" onclick="toggleSection('request-body')">
+        <h2>優先休假及排班申請</h2>
+        <span class="toggle-icon" id="request-icon">▼</span>
+      </div>
+      <div id="request-body" class="card-body">
+        <div class="table-scroll">
+          <table class="request-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="req-label">申請休假</td>
+                <td><input type="text" class="req-input" id="req-off-A" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-off-B" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-off-C" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-off-D" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-off-E" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-off-F" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-off-G" placeholder=""></td>
+              </tr>
+              <tr>
+                <td class="req-label">申請排班</td>
+                <td><input type="text" class="req-input" id="req-work-A" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-work-B" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-work-C" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-work-D" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-work-E" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-work-F" placeholder=""></td>
+                <td><input type="text" class="req-input" id="req-work-G" placeholder=""></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="hint" style="margin-top:8px">填入日期數字，以逗號分隔。假日申請排班 = 優先排為假日上班者。</p>
+      </div>
+    </section>
+
+    <!-- 排班設定 -->
+    <section class="card">
+      <div class="card-header">
+        <h2>排班設定</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <label>年份</label>
+          <select id="year-select"></select>
+          <label>月份</label>
+          <select id="month-select"></select>
+        </div>
+        <div class="form-row">
+          <label>額外假日</label>
+          <input type="text" id="extra-holidays" placeholder="例：4, 5, 18（逗號分隔的日期數字）">
+          <span class="hint">六、日之外需要放假的日期</span>
+        </div>
+        <div class="form-row actions">
+          <button onclick="handleGenerate()" class="btn primary">產生排班</button>
+          <button onclick="handlePush()" class="btn success" id="push-btn" disabled>推送到 Google Sheet</button>
+        </div>
+        <div id="msg-area"></div>
+      </div>
+    </section>
+
+    <!-- 排班表 -->
+    <section class="card" id="calendar-section" style="display:none">
+      <div class="card-header">
+        <h2 id="calendar-title"></h2>
+      </div>
+      <div class="card-body">
+        <div class="table-scroll">
+          <table id="calendar-table"></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 統計 -->
+    <section class="card" id="stats-section" style="display:none">
+      <div class="card-header">
+        <h2>統計資料</h2>
+      </div>
+      <div class="card-body">
+        <div id="stats-container"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script src="sheets.js"></script>
+</body>
+</html>
