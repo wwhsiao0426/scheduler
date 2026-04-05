@@ -27,31 +27,6 @@
       </div>
     </section>
 
-    <!-- 排班月份設定 -->
-    <section class="card">
-      <div class="card-header">
-        <h2>排班月份設定</h2>
-      </div>
-      <div class="card-body">
-        <div class="form-row">
-          <label>年份</label>
-          <select id="year-select"></select>
-          <label>月份</label>
-          <select id="month-select"></select>
-        </div>
-        <div class="form-row">
-          <label>額外假日</label>
-          <input type="text" id="extra-holidays" placeholder="例：4, 5, 18（逗號分隔的日期數字）">
-          <span class="hint">六、日之外需要放假的日期</span>
-        </div>
-        <div class="form-row actions">
-          <button onclick="handleGenerate()" class="btn primary">產生排班</button>
-          <button onclick="handlePush()" class="btn success" id="push-btn" disabled>推送到 Google Sheet</button>
-        </div>
-        <div id="msg-area"></div>
-      </div>
-    </section>
-
     <!-- 優先休假及排班申請 -->
     <section class="card">
       <div class="card-header" onclick="toggleSection('request-body')">
@@ -92,6 +67,31 @@
           </table>
         </div>
         <p class="hint" style="margin-top:8px">填入日期數字，以逗號分隔。假日申請排班 = 優先排為假日上班者。</p>
+      </div>
+    </section>
+
+    <!-- 排班月份設定 -->
+    <section class="card">
+      <div class="card-header">
+        <h2>排班月份設定</h2>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <label>年份</label>
+          <select id="year-select"></select>
+          <label>月份</label>
+          <select id="month-select"></select>
+        </div>
+        <div class="form-row">
+          <label>額外假日</label>
+          <input type="text" id="extra-holidays" placeholder="例：4, 5, 18（逗號分隔的日期數字）">
+          <span class="hint">六、日之外需要放假的日期</span>
+        </div>
+        <div class="form-row actions">
+          <button onclick="handleGenerate()" class="btn primary">產生排班</button>
+          <button onclick="handlePush()" class="btn success" id="push-btn" disabled>推送到 Google Sheet</button>
+        </div>
+        <div id="msg-area"></div>
       </div>
     </section>
 
