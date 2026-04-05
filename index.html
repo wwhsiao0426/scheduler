@@ -12,6 +12,21 @@
       <h1>排班表系統</h1>
     </header>
 
+    <!-- 排班說明 -->
+    <section class="card">
+      <div class="card-header">
+        <h2>排班規則說明</h2>
+      </div>
+      <div class="card-body">
+        <ol class="rules-list">
+          <li>平日每天共六人上班，時段分配如下：14:00–22:00 一人、15:00–23:00 一人、16:00–00:00 三人、20:00–04:00 一人。</li>
+          <li>七人各時段的出班次數須平均分配，確保每人工作量相當。</li>
+          <li>假日（六、日及額外指定假日）每天排一人上班，並設一人備援（顯示於括號內）；假日出班次數同樣平均分配給所有人。</li>
+          <li>每人不得連續上班超過六天，系統將自動強制安排休息。</li>
+        </ol>
+      </div>
+    </section>
+
     <!-- Google Sheet 設定 -->
     <section class="card">
       <div class="card-header" onclick="toggleSection('config-body')">
