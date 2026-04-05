@@ -54,6 +54,7 @@ header h1 {
 }
 
 .toggle-icon.collapsed { transform: rotate(-90deg); }
+.header-hint { font-size: 0.78rem; font-weight: 400; color: #9ca3af; margin-left: 6px; }
 
 .card-body {
   padding: 20px;
